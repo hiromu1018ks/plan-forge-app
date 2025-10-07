@@ -7,6 +7,14 @@
 - **環境セットアップ**: Monorepo 構成/言語選定（Backend: TypeScript or Go, Frontend: React+TypeScript）を確定し、Builder/Linter/Formatter/Testing フレームワークを定義。CI/CD の骨格（lint/test/build）を走らせる。
 - **インフラ構成ベース**: docker-compose もしくは devcontainer を用意し、PostgreSQL・オブジェクトストレージ互換（minio 等）・LLM ワーカー用スタブを起動できるようにする。
 - **共通ライブラリ**: API レスポンス/エラーフォーマット、JSON Schema 検証ユーティリティ、RBAC/セッション管理の共通モジュールを準備。
+- **全体方針**:
+  - `pnpm` ワークスペース＋ `Turborepo` に frontend／backend／LLM-worker を束ね、PF-ARCH-001 2章のモジュール分割と PF-REQ-001 に沿った Monorepo 前提を満たす。
+  - `docker-compose` で PostgreSQL／MinIO／LLM スタブを起動し、Cloudflare Workers では R2・KV を本番で利用する構成と差分が小さくなるように環境を揃える。
+  - `zod` スキーマを `@planforge/contracts` パッケージで共有し、Hono API／フロント／LLM 検証を一元化。`zod-to-json-schema` で JSON Schema を生成し、PF-AI-001 2.4 および PF-API-001 3.2 の統一エラー形式を実現する。
+  - backend は Hono.js＋Prisma＋Auth.js(Core)＋Cloudflare KV セッションで構成し、監査記録は Prisma ミドルレイヤを経由して PF-AUD-001 5章の必須フィールドを自動付与する。
+  - frontend は React 19＋Vite＋TanStack Query＋React Router で構成し、UI コンポーネントは Radix UI＋Tailwind を基盤に PF-UI-001 のアクセシビリティ要件とショートカット仕様を満たす。
+  - LLM ワーカーは Node.js(TypeScript)＋`openai` ライブラリで JSON Schema 検証を `ajv` で行い、自己修復 1 回・監査ログ送出・Cloudflare Workers への将来移行を想定した抽象化を実装する。
+  - CI/CD は GitHub Actions で lint/test/build/migrate/deploy を構成し、SAST（Semgrep）・DAST（OWASP ZAP）・依存更新（Renovate）・OpenAPI 契約テスト（Schemathesis）を組み込み PF-NFR-001／PF-QA-001／PF-SEC-001 の非機能要件をカバーする。
 
 ## 2. データ層（PF-DM-001 準拠）
 

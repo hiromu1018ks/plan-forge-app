@@ -1,0 +1,32 @@
+# 依存関係
+node_modules/
+.pnpm-store/
+
+# ビルド成果物
+dist/
+build/
+.next/
+.turbo/
+
+# 環境変数
+.env
+.env.local
+.env*.local
+
+# IDE設定
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS関連
+.DS_Store
+Thumbs.db
+
+# ログ
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# テストカバレッジ
+coverage/

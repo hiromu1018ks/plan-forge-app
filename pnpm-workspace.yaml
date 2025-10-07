@@ -1,0 +1,9 @@
+packages:
+  # フロントエンドパッケージ（React + Vite）
+  - "packages/frontend"
+  # バックエンドパッケージ（Hono API）
+  - "packages/backend"
+  # LLMワーカーパッケージ（AI処理）
+  - "packages/worker"
+  # 共通パッケージ（型定義・スキーマ）
+  - "packages/contracts"
