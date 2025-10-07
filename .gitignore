@@ -30,3 +30,15 @@ pnpm-debug.log*
 
 # テストカバレッジ
 coverage/
+
+# 環境変数ファイル（機密情報を含むため）
+.env
+.env.local
+.env.*.local
+
+# Dockerボリュームデータ（ローカルで生成されるため）
+docker/postgres-data/
+docker/minio-data/
+
+# Docker一時ファイル
+.docker/

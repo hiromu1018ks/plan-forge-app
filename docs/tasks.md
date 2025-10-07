@@ -5,11 +5,11 @@
 ## 1. プロジェクト基盤整備
 
 - **環境セットアップ**: Monorepo 構成/言語選定（Backend: TypeScript or Go, Frontend: React+TypeScript）を確定し、Builder/Linter/Formatter/Testing フレームワークを定義。CI/CD の骨格（lint/test/build）を走らせる。
-- **インフラ構成ベース**: docker-compose もしくは devcontainer を用意し、PostgreSQL・オブジェクトストレージ互換（minio 等）・LLM ワーカー用スタブを起動できるようにする。
+- **インフラ構成ベース**: docker-compose もしくは devcontainer を用意し、まずは PostgreSQL だけを安定稼働させる。MinIO や LLM スタブは要件が固まり次第、別 Compose ファイルやサービス追加として段階的に組み込む。
 - **共通ライブラリ**: API レスポンス/エラーフォーマット、JSON Schema 検証ユーティリティ、RBAC/セッション管理の共通モジュールを準備。
 - **全体方針**:
   - `pnpm` ワークスペース＋ `Turborepo` に frontend／backend／LLM-worker を束ね、PF-ARCH-001 2章のモジュール分割と PF-REQ-001 に沿った Monorepo 前提を満たす。
-  - `docker-compose` で PostgreSQL／MinIO／LLM スタブを起動し、Cloudflare Workers では R2・KV を本番で利用する構成と差分が小さくなるように環境を揃える。
+  - `docker-compose` は v1 では PostgreSQL サービスのみを対象にし、周辺（MinIO／LLM スタブ／メッセージキュー）は設計確定後に追加する。Cloudflare 環境との差分はリードミーで補足し、将来の compose 拡張を想定したファイル分割ルールを用意する。
   - `zod` スキーマを `@planforge/contracts` パッケージで共有し、Hono API／フロント／LLM 検証を一元化。`zod-to-json-schema` で JSON Schema を生成し、PF-AI-001 2.4 および PF-API-001 3.2 の統一エラー形式を実現する。
   - backend は Hono.js＋Prisma＋Auth.js(Core)＋Cloudflare KV セッションで構成し、監査記録は Prisma ミドルレイヤを経由して PF-AUD-001 5章の必須フィールドを自動付与する。
   - frontend は React 19＋Vite＋TanStack Query＋React Router で構成し、UI コンポーネントは Radix UI＋Tailwind を基盤に PF-UI-001 のアクセシビリティ要件とショートカット仕様を満たす。
