@@ -42,3 +42,6 @@ docker/minio-data/
 
 # Docker一時ファイル
 .docker/
+
+docs/learning
+.serena

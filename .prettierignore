@@ -1,0 +1,17 @@
+# ビルド成果物（自動生成されたファイル）
+  dist
+  build
+  .next
+  coverage
+
+  # 依存関係（外部ライブラリ）
+  node_modules
+  pnpm-lock.yaml
+
+  # 環境設定ファイル（改行コードが重要な場合がある）
+  .env
+  .env.*
+
+  # その他
+  .turbo
+  *.log
