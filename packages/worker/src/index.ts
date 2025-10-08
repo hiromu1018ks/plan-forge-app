@@ -1,7 +1,7 @@
 // OpenAI クライアントをインポート
-import OpenAI from "openai";
 // 共通スキーマをインポート
 import { UserSchema } from "@planforge/contracts";
+import OpenAI from "openai";
 
 // ========================================
 // OpenAI クライアントの初期化
@@ -32,6 +32,7 @@ async function processWithLLM(prompt: string): Promise<string> {
 
     // レスポンスから結果を取得
     const result = completion.choices[0]?.message?.content || "";
+
     return result;
   } catch (error) {
     console.error("❌ LLM processing error:", error);
@@ -48,6 +49,7 @@ function validateUserData(data: unknown) {
     // contracts パッケージのスキーマを使用
     const validatedUser = UserSchema.parse(data);
     console.log("✅ Validation successful:", validatedUser);
+
     return validatedUser;
   } catch (error) {
     console.error("❌ Validation failed:", error);

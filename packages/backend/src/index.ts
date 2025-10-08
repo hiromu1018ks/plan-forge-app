@@ -1,7 +1,7 @@
-import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { zValidator } from "@hono/zod-validator";
 import { UserSchema } from "@planforge/contracts";
+import { Hono } from "hono";
 import { z } from "zod";
 
 const app = new Hono();
@@ -35,6 +35,7 @@ const QuerySchema = z.object({
 
 app.get("/hello", zValidator("query", QuerySchema), (c) => {
   const { name } = c.req.valid("query");
+
   return c.json({
     message: `Hello, ${name}!`,
   });
